@@ -198,7 +198,9 @@ if __name__ == "__main__":
             temp_lines = []
             for i in xrange(0, len(self.original_lines)):
                 if self.original_lines[i].find("include $RULE_PATH") != -1:
-                    temp_lines[i] = "# " + self.original_lines[i]
+                    temp_lines.append( "# " + self.original_lines[i])
+                else:
+                    temp_lines.append(self.original_lines[i])
             self.clear_lines = temp_lines
 
         def ruleSet(self, rule="/usr/local/snort/rules/rules/rules/ownrules/rulesets/1.rules"):
