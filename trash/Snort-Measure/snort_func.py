@@ -5,13 +5,15 @@ import os
 import subprocess
 import platform
 
+# /usr/local/snort/rules/rules/rules/ownrules/ruleset
+
 outname = "bayesian.txt"
 def output(s):
     with open(outname, "a") as f:
         f.write(str(s)+"\n")
 
 
-def change_conf(conf = "/usr/local/snort/rules/rules/etc/snort.conf", x=20):
+def change_conf(conf = "/usr/local/snort/rules/rule s/etc/snort.conf", x=20):
     with open(conf, "r") as f:
         lines= f.readlines()
     for i in xrange(0,len(lines)):
@@ -35,7 +37,7 @@ def f(x):
             child.wait()
             return y
         change_conf(x=x)
-        command = "snort -d -A fast -r /home/lcx/snortEXP/insideHTTP.pcap -c  /usr/local/snort/rules/rules/etc/snort.conf"
+        command = "snort -d -A fast -r /home/lcx/snortEXP/onedayHTTP.pcap -c  /usr/local/snort/rules/rules/etc/snort.conf"
         # command = "cat /etc/passwd"
         command = command.split()
         child = subprocess.Popen(command, stdout=subprocess.PIPE)

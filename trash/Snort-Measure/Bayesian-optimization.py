@@ -12,7 +12,7 @@ def k(xs,xs2,sigma=1,l=1):
 
     # Pairwise difference matrix
     dx = np.expand_dims(xs,1)-np.expand_dims(xs2,0)
-    return (sigma ** 2) - np.exp(-((dx / 1) ** 2) / 2)
+    return (sigma ** 2) * np.exp(-((dx / 1) ** 2) / 2)
 
 
 def m(x):

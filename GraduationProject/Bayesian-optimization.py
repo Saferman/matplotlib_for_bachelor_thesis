@@ -1,5 +1,5 @@
 # encoding:utf-8
-    # 参考文献：贝叶斯优化调参 笔记前面这些链接，代码来自http://36kr.com/p/5114423.html
+# 参考文献：贝叶斯优化调参 笔记前面这些链接，代码来自http://36kr.com/p/5114423.html
 import numpy as np
 from getOBS import f
 import platform
