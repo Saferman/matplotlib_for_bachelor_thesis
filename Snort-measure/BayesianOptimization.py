@@ -10,7 +10,7 @@ import platform
 import numpy as np
 
 class BayesianOptimization:
-    def __init__(self, resultFile="bayesian.txt",goalFunc = None, initX = [], X = np.linspace(0, 40, 41), plot=False):
+    def __init__(self, resultFile="bayesian.txt",goalFunc = None, initX = [], X = [], plot=False):
         # 保存结果
         self.resultFile = resultFile
         # 执行函数
@@ -22,7 +22,7 @@ class BayesianOptimization:
         # 保存结果
         self.resultString = ""
         # 自变量的全部取值空间
-        self.X = X
+        self.X = list(X)
         # 记录所有采样过的点和采样值,包括正式和初始
         self.xobs = []
         self.yobs = []
@@ -31,14 +31,19 @@ class BayesianOptimization:
         self.xbest = 0
         # 记录每次正式采样过程中最大的W值
         self.allW = []
-        self._init()
         # 是否要将结果按照画图展示
         self.plot = plot
+
+        self._init()
         pass
 
     def _init(self):
         if os.path.exists(self.resultFile):
             os.remove(self.resultFile)
+        # 将X元素整形化
+        for i in xrange(0, len(self.X)):
+            self.X[i] = int(self.X[i])
+        print "贝叶斯优化初始化完成"
 
     def _sampling(self, x):
         y = self.goalFunc(x)
@@ -81,9 +86,6 @@ class BayesianOptimization:
         for x in self.initX:
             y = self._sampling(x)
             self.initY.append(y)
-
-        self.xobs = self.initX
-        self.yobs = self.initY
 
         # 贝叶斯优化采样
         while not self._meetStop():
@@ -142,10 +144,11 @@ class BayesianOptimization:
         return (sigma ** 2) * np.exp(-((dx / 1) ** 2) / 2)
 
 
-
+print "?"
 if __name__ == "__main__":
     global_conf = "/usr/local/snort/rules/rules/etc/snort.conf"
     global_traffic = "/home/lcx/snortEXP/onedayHTTP.pcap"
+    print "[+]begin"
     def f(x):
         def change_conf(conf = global_conf, x=20):
             with open(conf, "r") as f:
@@ -189,6 +192,7 @@ if __name__ == "__main__":
             with open(conf, "r") as f:
                 self.original_lines = f.readlines()  # 每个元素含有\n
             self.ruleClear()
+            print "ruleHandle初始化完成"
 
         def _saveConf(self, temp_lines=[]):
             with open(self.conf, "w") as f:
