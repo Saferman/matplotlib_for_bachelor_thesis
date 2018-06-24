@@ -27,8 +27,8 @@ class BayesianOptimization:
         self.xobs = []
         self.yobs = []
         # 记录正式采样过程中当前最大的采样点和采样值
-        self.W = 0
-        self.xbest = 0
+        self.W = None
+        self.xbest = None
         # 记录每次正式采样过程中最大的W值
         self.allW = []
         # 是否要将结果按照画图展示
@@ -64,13 +64,13 @@ class BayesianOptimization:
         return False
 
     def output(self):
-        self.resultString += "初始采样点:"  + str(self.initX) + "\n"
-        self.resultString += "初始样本值：" + str(self.initY) + "\n"
-        self.resultString += "最大性能值：" + str(self.W)   + "\n"
-        self.resultString += "最大性能值采样点" + str(self.xbest) + "\n"
-        self.resultString += "采样点全过程:" + str(self.xobs) + "\n"
-        self.resultString += "采样值全过程:" + str(self.yobs) + "\n"
-        self.resultString += "收敛次数：" + str(self.xobs.index(self.xbest)) + "\n"
+        self.resultString += "初始采样点:"  + str(self.initX) + "\r\n"
+        self.resultString += "初始样本值：" + str(self.initY) + "\r\n"
+        self.resultString += "采样点全过程:" + str(self.xobs) + "\r\n"
+        self.resultString += "采样值全过程:" + str(self.yobs) + "\r\n"
+        self.resultString += "最大性能值：" + str(self.W) + "\r\n"
+        self.resultString += "最大性能值采样点" + str(self.xbest) + "\r\n"
+        self.resultString += "收敛次数：" + str(self.xobs.index(self.xbest) + 1) + "\r\n"
         with open(self.resultFile, "w") as f:
             f.write(self.resultString)
 
@@ -104,7 +104,10 @@ class BayesianOptimization:
             x = other_x[next_sampling_x ]
             y = self._sampling(x)   # 这个函数会添加x,y到yobs和xobs里
             W = max(self.yobs)
-            if W > self.W:
+            if self.W == None:
+                self.W = W
+                self.xbest = x
+            elif W > self.W:
                 self.W = W
                 self.xbest = x
             self.allW.append(W)
@@ -233,6 +236,20 @@ if __name__ == "__main__":
         bo.optimize()
 
     ruleH.finish()
+
+    ### 最后结果整理
+    results = []
+    lines = []
+    for i in xrange(1, 11):
+        tag = "【+】%d.rules的测试结果\r\n" % i
+        results.append(tag)
+        with open("bayesian"+str(i)+".txt") as f:
+            lines = f.readlines()
+        results = results + lines
+    with open("TenExperiments.txt", "w") as f:
+        f.writelines(results)
+
+
 
 
 
